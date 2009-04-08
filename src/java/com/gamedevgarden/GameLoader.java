@@ -15,7 +15,7 @@ import org.newdawn.slick.AppletGameContainer;
 
 public class GameLoader extends BasicGame
 {
-  RubyGame game;
+  GameManagerBase game;
   Ruby runtime;
   RubyRuntimeAdapter evaler;
 
@@ -26,15 +26,16 @@ public class GameLoader extends BasicGame
 
   public void init( GameContainer container ) throws SlickException
   {
-    // Initialize JRuby runtime
     runtime = JavaEmbedUtils.initialize(new ArrayList());
     evaler = JavaEmbedUtils.newRuntimeAdapter();
     System.out.println(container.getClass()) ;
-    // Run script to get GameObject
-    evaler.eval(runtime, "require 'ruby_game'");
-    String id = getGameId(container);
-    IRubyObject unconvertedGame = evaler.eval(runtime, "RubyGameManager.new(" + id + ")");
-    game = (RubyGame) JavaEmbedUtils.rubyToJava(runtime, unconvertedGame, RubyGame.class);
+
+    evaler.eval(runtime, "require 'game_manager'");
+    String initialState = getProperty(container, "gdg_state");
+    
+    IRubyObject gameClass = evaler.eval(runtime, "GameManager");
+    Object[] parameters = {container, initialState};
+    game = (GameManagerBase)JavaEmbedUtils.invokeMethod(runtime, gameClass, "new", parameters, GameManagerBase.class);
   }
 
   public void update( GameContainer container, int delta ) throws SlickException
@@ -68,15 +69,15 @@ public class GameLoader extends BasicGame
     }
   }
 
-  private String getGameId(GameContainer container)
+  private String getProperty(GameContainer container, String property)
   {
     if(container instanceof AppletGameContainer.Container)
     {
-      return ((AppletGameContainer.Container)container).getApplet().getParameter("game_id");
+      return ((AppletGameContainer.Container)container).getApplet().getParameter(property);
     }
     else
     {
-      return System.getProperty("game_id");
+      return System.getProperty(property);
     }
   }
 }

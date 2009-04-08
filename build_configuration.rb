@@ -1,5 +1,5 @@
 configuration do |c|
-  c.project_name = 'GameGardenLoader'
+  c.project_name = 'GameLoader'
   c.output_dir = 'package'
   c.main_ruby_file = ''
   c.main_java_file = ''
