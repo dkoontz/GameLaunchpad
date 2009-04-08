@@ -1,4 +1,4 @@
-package com.gamegarden;
+package com.gamedevgarden;
 
 import java.util.ArrayList;
 import org.newdawn.slick.BasicGame;
@@ -11,6 +11,7 @@ import org.jruby.Ruby;
 import org.jruby.RubyRuntimeAdapter;
 import org.jruby.javasupport.JavaEmbedUtils;
 import org.jruby.runtime.builtin.IRubyObject;
+import org.newdawn.slick.AppletGameContainer;
 
 public class GameLoader extends BasicGame
 {
@@ -28,10 +29,11 @@ public class GameLoader extends BasicGame
     // Initialize JRuby runtime
     runtime = JavaEmbedUtils.initialize(new ArrayList());
     evaler = JavaEmbedUtils.newRuntimeAdapter();
-    System.out.println(container.getClass());
+    System.out.println(container.getClass()) ;
     // Run script to get GameObject
     evaler.eval(runtime, "require 'ruby_game'");
-    IRubyObject unconvertedGame = evaler.eval(runtime, "RubyGame.new");
+    String id = getGameId(container);
+    IRubyObject unconvertedGame = evaler.eval(runtime, "RubyGameManager.new(" + id + ")");
     game = (RubyGame) JavaEmbedUtils.rubyToJava(runtime, unconvertedGame, RubyGame.class);
   }
 
@@ -63,6 +65,18 @@ public class GameLoader extends BasicGame
     catch ( SlickException e )
     {
       e.printStackTrace();
+    }
+  }
+
+  private String getGameId(GameContainer container)
+  {
+    if(container instanceof AppletGameContainer.Container)
+    {
+      return ((AppletGameContainer.Container)container).getApplet().getParameter("game_id");
+    }
+    else
+    {
+      return System.getProperty("game_id");
     }
   }
 }
