@@ -33,7 +33,7 @@ public class GameLoader extends BasicGame
     evaler.eval(runtime, "require 'game_manager'");
     String initialState = getProperty(container, "glp_scene");
     
-    IRubyObject gameClass = evaler.eval(runtime, "GameManager");
+    IRubyObject gameClass = evaler.eval(runtime, "GameLaunchpad::GameManager");
     Object[] parameters = {container, initialState};
     game = (GameManagerBase)JavaEmbedUtils.invokeMethod(runtime, gameClass, "new", parameters, GameManagerBase.class);
   }

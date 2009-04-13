@@ -1,5 +1,5 @@
 configuration do |c|
-  c.project_name = 'GLPLoader'
+  c.project_name = 'GameLaunchpad'
   c.output_dir = 'package'
   c.main_ruby_file = ''
   c.main_java_file = ''
