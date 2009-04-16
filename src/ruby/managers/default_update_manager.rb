@@ -1,9 +1,7 @@
-class DefaultUpdateManager
-  def initialize(scene)
-    @scene = scene
-  end
+module GameLaunchpad
+  class DefaultUpdateManager < Manager
+    def update(delta)
 
-  def update(delta)
-
+    end
   end
 end

@@ -1,5 +1,7 @@
-require 'scenes/base_scene'
+require 'game_object'
+require 'manager'
 require 'inflector'
+require 'scenes/base_scene'
 
 module GameLaunchpad
   class GameManager < Java::com::gamelaunchpad::GameManagerBase
@@ -12,15 +14,10 @@ module GameLaunchpad
     def load_scene(scene)
       begin
         unless Object.const_defined? scene.camelize
-          # Try loading GameLaunchpad.jar scenes first, then the scenes from the application's jar.
-          begin
-            require "scenes/#{scene.underscore}"
-          rescue LoadError
-            require "src/scenes/#{scene.underscore}"
-          end
+          require "scenes/#{scene.underscore}"
           scene.camelize.constantize.new(@container)
         end
-      rescue => e
+      rescue LoadError => e
         raise ArgumentError, "Invalid scene name #{scene.inspect}\nOriginal error: #{e.message}\n#{e.backtrace}"
       end
     end
@@ -32,7 +29,6 @@ module GameLaunchpad
 
     def render(container, graphics)
       @scene.manager(:render).render(graphics)
-      #      graphics.draw_string("Rendering", 10, 35)
     end
   end
 end

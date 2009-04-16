@@ -22,20 +22,24 @@ public class GameLoader extends BasicGame
   public GameLoader()
   {
     super( "Loading Game..." );
+    long start = System.currentTimeMillis();
+    runtime = JavaEmbedUtils.initialize(new ArrayList());
+    evaler = JavaEmbedUtils.newRuntimeAdapter();
+    long stop = System.currentTimeMillis();
+    System.out.println("Spent " + (stop - start) + " milliseconds loading JRuby");
   }
 
   public void init( GameContainer container ) throws SlickException
   {
-    runtime = JavaEmbedUtils.initialize(new ArrayList());
-    evaler = JavaEmbedUtils.newRuntimeAdapter();
-    System.out.println(container.getClass()) ;
-
+    long start = System.currentTimeMillis();
     evaler.eval(runtime, "require 'game_manager'");
     String initialState = getProperty(container, "glp_scene");
     
     IRubyObject gameClass = evaler.eval(runtime, "GameLaunchpad::GameManager");
     Object[] parameters = {container, initialState};
     game = (GameManagerBase)JavaEmbedUtils.invokeMethod(runtime, gameClass, "new", parameters, GameManagerBase.class);
+    long stop = System.currentTimeMillis();
+    System.out.println("Spent " + (stop - start) + " milliseconds loading Launchpad");
   }
 
   public void update( GameContainer container, int delta ) throws SlickException

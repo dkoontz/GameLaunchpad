@@ -1,9 +1,7 @@
-class DefaultInputManager
-  def initialize(scene)
-    @scene = scene
-  end
+module GameLaunchpad
+  class DefaultInputManager < Manager
+    def update(delta)
 
-  def update(delta)
-
+    end
   end
 end
