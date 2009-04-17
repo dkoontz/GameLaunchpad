@@ -5,7 +5,8 @@ require 'managers/default_input_manager'
 
 module GameLaunchpad
   class BaseScene
-    def initialize(container)
+    def initialize(game_manager, container)
+      @game_manager = game_manager
       @container = container
       @managers = {:game_object => nil,
                    :render => nil,
@@ -24,6 +25,22 @@ module GameLaunchpad
       @managers[:render] = DefaultRenderManager.new(self)
       @managers[:update] = DefaultUpdateManager.new(self)
       @managers[:input] = DefaultInputManager.new(self)
+    end
+
+    def game_object_manager
+      @managers[:game_object]
+    end
+
+    def render_manager
+      @managers[:render]
+    end
+
+    def update_manager
+      @managers[:update]
+    end
+
+    def input_manager
+      @managers[:input]
     end
   end
 end

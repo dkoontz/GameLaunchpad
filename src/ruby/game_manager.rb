@@ -15,7 +15,7 @@ module GameLaunchpad
       begin
         unless Object.const_defined? scene.camelize
           require "scenes/#{scene.underscore}"
-          scene.camelize.constantize.new(@container)
+          scene.camelize.constantize.new(self, @container)
         end
       rescue LoadError => e
         raise ArgumentError, "Invalid scene name #{scene.inspect}\nOriginal error: #{e.message}\n#{e.backtrace}"
