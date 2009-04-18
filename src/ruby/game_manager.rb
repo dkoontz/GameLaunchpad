@@ -5,6 +5,13 @@ require 'scenes/base_scene'
 
 module GameLaunchpad
   class GameManager < Java::com::gamelaunchpad::GameManagerBase
+    
+    # Global "heartbeat" of the game.  All behaviors needing to detect the passage
+    # of time should query this method to allow the game to be paused.
+    def self.current_time
+      java.lang.System.current_time_millis
+    end
+
     def initialize(container, scene)
       super()
       @container = container

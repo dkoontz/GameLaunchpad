@@ -1,7 +1,6 @@
 module GameLaunchpad
   class Easing
-    def self.linear(start_value, target_value, start_time, duration)
-      current_time = java.lang.System.current_time_millis
+    def self.linear(start_value, target_value, start_time, current_time, duration)
       if current_time > (start_time + duration)
         target_value
       else
@@ -11,8 +10,7 @@ module GameLaunchpad
     end
 
     EASE_IN_PERCENTAGE = 0.3
-    def self.ease_in(start_value, target_value, start_time, duration)
-      current_time = java.lang.System.current_time_millis
+    def self.ease_in(start_value, target_value, start_time, current_time, duration)
       if current_time > (start_time + duration)
         target_value
       else
@@ -41,7 +39,12 @@ module GameLaunchpad
 
     def value
       if @function
-        @function.call(@value, @target_value, @start_time, @duration)
+        if (GameManager.current_time - @start_time) >= @duration
+          @function = nil
+          @value = @target_value
+        else
+          @function.call(@value, @target_value, @start_time, GameManager.current_time, @duration)
+        end
       else
         @value
       end
@@ -59,7 +62,7 @@ module GameLaunchpad
     def interpolate_to(value, duration = 0, easing = Easing::LINEAR, &block)
       @target_value = value
       @duration = duration
-      @start_time = java.lang.System.current_time_millis
+      @start_time = GameManager.current_time
       @function = block || easing
     end
   end
