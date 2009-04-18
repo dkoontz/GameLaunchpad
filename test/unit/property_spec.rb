@@ -10,7 +10,7 @@ module GameLaunchpad
   end
 end
 
-require 'game_object'
+require 'property'
 
 describe GameLaunchpad::Property do
   before(:each) do
