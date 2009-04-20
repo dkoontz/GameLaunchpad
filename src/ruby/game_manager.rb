@@ -1,6 +1,7 @@
 require 'game_object'
 require 'manager'
 require 'inflector'
+require 'behavior'
 require 'scenes/base_scene'
 
 module GameLaunchpad

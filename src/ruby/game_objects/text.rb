@@ -8,11 +8,11 @@ class Text < GameLaunchpad::GameObject
   STYLES = [PLAIN, ITALIC, BOLD]
 
   attr_accessor :text
-  property_accessor :x, :y
+  property :x, :y
 
-  def initialize(text, x, y, font_name = "Arial", style = PLAIN, font_size = 12)
-    @x = x
-    @y = y
+  def load(text, x, y, font_name = "Arial", style = PLAIN, font_size = 12)
+    self.x.value = x
+    self.y.value = y
     @text = text
     change_font(font_name, style, font_size)
   end
@@ -23,7 +23,7 @@ class Text < GameLaunchpad::GameObject
   end
 
   def render(graphics)
-    @font.draw_string(@x, @y, @text)
+    @font.draw_string(x.value, y.value, @text)
   end
 
 end
