@@ -12,6 +12,10 @@ class CallbackInstanceTest
   end
 end
 
+class CallbackSubclassTest < CallbackTest
+  
+end
+
 describe GameLaunchpad::Callbacks do
   it "adds an 'initialize_callback_system' method" do
     CallbackTest.instance_methods.member?('initialize_callback_system').should be_true
@@ -83,5 +87,13 @@ describe GameLaunchpad::Callbacks, "<callback name>_callbacks" do
     test.before_foo { @callback_run_count += 1 }
     test.run_before_foo_callbacks
     @callback_run_count.should == 1
+  end
+
+  it "allows callbacks to be inherited" do
+    CallbackTest.has_callbacks :before_foo, :after_bar
+    CallbackSubclassTest.has_callbacks :before_baz
+    CallbackSubclassTest.instance_methods.member?('before_foo').should be_true
+    CallbackSubclassTest.instance_methods.member?('after_bar').should be_true
+    CallbackSubclassTest.instance_methods.member?('before_baz').should be_true
   end
 end

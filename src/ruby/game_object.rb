@@ -4,6 +4,7 @@ require 'callbacks'
 module GameLaunchpad
   class GameObject
     include GameLaunchpad::Callbacks
+    include GameLaunchpad::Behaviors
 
     def self.property(*properties)
       properties.each do |property|
