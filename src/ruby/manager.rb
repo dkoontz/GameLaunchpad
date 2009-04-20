@@ -5,6 +5,7 @@ module GameLaunchpad
     include GameLaunchpad::Callbacks
 
     def initialize(scene)
+      initialize_callback_system
       @scene = scene
       load
     end

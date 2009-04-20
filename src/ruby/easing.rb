@@ -9,18 +9,16 @@ module GameLaunchpad
       end
     end
 
-    EASE_IN_PERCENTAGE = 0.3
+    # Exponential easing
+    # slope * ((end_time - start_time) ** 2) + start_value = end_value
     def self.ease_in(start_value, target_value, start_time, current_time, duration)
       if current_time > (start_time + duration)
         target_value
       else
-        percent_complete = (current_time - start_time) / duration.to_f
-        if percent_complete <= EASE_IN_PERCENTAGE
-          easing_target = EASE_IN_PERCENTAGE * target_value
-          start_value + (easing_target * ((percent_complete / EASE_IN_PERCENTAGE) ** 2))
-        else
-          linear(start_value, target_value, start_time, duration)
-        end
+        value_delta = end_value - start_value
+        time_delta = start_time + duration
+        slope = value_delta / (time_delta ** 2)
+        (slope * ((current_time - start_time) ** 2)) + start_value
       end
     end
 

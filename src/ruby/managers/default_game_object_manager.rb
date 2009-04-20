@@ -1,22 +1,22 @@
 module GameLaunchpad
   class DefaultGameObjectManager < Manager
-    define_callbacks :before_game_object_added, :after_game_object_added
-    define_callbacks :before_game_object_removed, :after_game_object_removed
+    has_callbacks :before_game_object_added, :after_game_object_added
+    has_callbacks :before_game_object_removed, :after_game_object_removed
 
     def load
       @game_objects = []
     end
     
     def add_game_object(object)
-      run_callbacks(:before_game_object_added, object)
+      run_before_game_object_added_callbacks object
       @game_objects << object
-      run_callbacks(:after_game_object_added, object)
+      run_after_game_object_added_callbacks object
     end
 
     def remove_game_object(object)
-      run_callbacks(:before_game_object_removed, object)
+      run_before_game_object_removed_callbacks object
       @game_objects.delete object
-      run_callbacks(:before_game_object_removed, object)
+      run_before_game_object_removed_callbacks object
     end
 
     def game_objects

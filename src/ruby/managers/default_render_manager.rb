@@ -3,11 +3,11 @@ module GameLaunchpad
 
     def load
       @renderable_game_objects = []
-      @scene.manager(:game_object).after_game_object_added do |object|
-        @renderable_game_objects << object if object.responds_to? :render
+      @scene.manager(:game_object).after_game_object_added do |object, options|
+        @renderable_game_objects << object if object.respond_to? :render
       end
 
-      @scene.manager(:game_object).after_game_object_removed do |object|
+      @scene.manager(:game_object).after_game_object_removed do |object, options|
         @renderable_game_objects.delete object
       end
     end
