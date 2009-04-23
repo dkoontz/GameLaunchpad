@@ -27,7 +27,7 @@ describe GameLaunchpad::Property do
   end
 end
 
-describe GameLaunchpad::Property, "interpolate_to" do
+describe GameLaunchpad::Property, "#interpolate_to" do
   before(:each) do
     @property = GameLaunchpad::Property.new
   end

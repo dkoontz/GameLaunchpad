@@ -1,6 +1,6 @@
 require 'game_object'
 
-describe GameLaunchpad::GameObject, "property" do
+describe GameLaunchpad::GameObject, "#property" do
   class PropertyTestGameObject < GameLaunchpad::GameObject
     property :foo
   end

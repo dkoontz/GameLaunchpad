@@ -11,7 +11,7 @@ module GameLaunchpad
 
   module InstanceMethods
     def initialize_callback_system
-      @callbacks = Hash.new { |hash,key| hash[key] = {} }
+      @__callbacks = Hash.new { |hash,key| hash[key] = {} }
       @random_callback_id = 0
     end
   end
@@ -21,11 +21,11 @@ module GameLaunchpad
       names.each do |callback_name|
         class_eval <<-"ENDL", __FILE__, __LINE__ + 1
           def #{callback_name}(key = (@random_callback_id += 1), &block)
-            @callbacks[:#{callback_name}][key] = block
+            @__callbacks[:#{callback_name}][key] = block
           end
 
           def run_#{callback_name}_callbacks(object = nil, options = {})
-            @callbacks[:#{callback_name}].each do |key, callback|
+            @__callbacks[:#{callback_name}].each do |key, callback|
               break if !callback.call(object, options)
             end
           end

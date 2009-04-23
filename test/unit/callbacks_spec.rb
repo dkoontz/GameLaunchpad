@@ -26,7 +26,7 @@ describe GameLaunchpad::Callbacks do
   end
 end
 
-describe GameLaunchpad::Callbacks, "has_callbacks" do
+describe GameLaunchpad::Callbacks, "#has_callbacks" do
   it "creates a <callback name> instance method for each callback" do
     CallbackTest.has_callbacks :before_foo, :after_bar
     CallbackTest.instance_methods.member?('before_foo').should be_true
@@ -40,7 +40,7 @@ describe GameLaunchpad::Callbacks, "has_callbacks" do
   end
 end
 
-describe GameLaunchpad::Callbacks, "<callback name>_callbacks" do
+describe GameLaunchpad::Callbacks, "#<callback name>_callbacks" do
   it "calls each registered callback" do
     CallbackInstanceTest.has_callbacks :before_foo, :after_bar
     test = CallbackInstanceTest.new

@@ -1,5 +1,6 @@
 require 'property'
 require 'callbacks'
+require 'behaviors'
 
 module GameLaunchpad
   class GameObject
@@ -19,6 +20,7 @@ module GameLaunchpad
 
     def initialize(*args, &block)
       initialize_callback_system
+      initialize_behavior_system
       load(*args, &block)
     end
 
