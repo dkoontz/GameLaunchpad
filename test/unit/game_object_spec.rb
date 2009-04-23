@@ -7,6 +7,7 @@ describe GameLaunchpad::GameObject, "#property" do
 
   it "adds a property accessor to the class" do
     @prop_test = PropertyTestGameObject.new
+    
     @prop_test.foo.class.should == GameLaunchpad::Property
   end
 

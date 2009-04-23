@@ -8,9 +8,10 @@ class Text < GameLaunchpad::GameObject
   STYLES = [PLAIN, ITALIC, BOLD]
 
   attr_accessor :text
-  property :x, :y
 
   def load(text, x, y, font_name = "Arial", style = PLAIN, font_size = 12)
+    add_behavior :spatial
+
     self.x.value = x
     self.y.value = y
     @text = text

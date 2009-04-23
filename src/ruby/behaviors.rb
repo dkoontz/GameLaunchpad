@@ -3,12 +3,12 @@ require 'inflector'
 module GameLaunchpad
   module Behaviors
     def self.included(base)
-      base.extend ClassMethods
-      base.send(:include, InstanceMethods)
+      base.extend BehaviorClassMethods
+      base.send(:include, BehaviorInstanceMethods)
     end
   end
 
-  module InstanceMethods
+  module BehaviorInstanceMethods
     def initialize_behavior_system
       @__behaviors = {}
     end
@@ -30,7 +30,7 @@ module GameLaunchpad
     end
   end
 
-  module ClassMethods
+  module BehaviorClassMethods
     
   end
 end

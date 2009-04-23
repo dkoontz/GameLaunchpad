@@ -1,10 +1,11 @@
 require 'set'
 require 'callbacks'
+require 'property'
 
 module GameLaunchpad
   class BaseBehavior
     include GameLaunchpad::Callbacks
-
+    include GameLaunchpad::Properties
 
     def initialize(target)
       @target = target
@@ -30,6 +31,8 @@ module GameLaunchpad
 
     def declare_methods(*names)
       names.each do |name|
+        raise "Method #{name} already exists on object #{@target}, cannot add method from behavior #{self.class}" if @target.methods.member? name.to_s
+
         @declared_methods << name.to_sym
         # Add all declared methods to target object
 
@@ -46,7 +49,7 @@ module GameLaunchpad
         end
         @target.send :instance_eval, <<-ENDL
            def #{name}(#{argument_string})
-             @behaviors[#{self.class.name.underscore}].#{name}(#{argument_string})
+             @__behaviors[:#{self.class.name.underscore}].#{name}(#{argument_string})
            end
            ENDL
       end

@@ -12,12 +12,49 @@ class TestBehavior < GameLaunchpad::BaseBehavior
   def dont_add; end
 end
 
+class TestRaiseErrorBehavior < GameLaunchpad::BaseBehavior
+  def load
+    declare_methods :existing_method
+  end
+  
+  def existing_method; end
+end
+
+class TestSubclassBehavior < TestBehavior
+  def load
+    super
+    declare_methods :quux
+  end
+
+  def quux; end
+end
+
 class TestGameObject
   include GameLaunchpad::Behaviors
   
   def initialize
     initialize_behavior_system
     add_behavior :test_behavior
+  end
+end
+
+class TestRaiseErrorGameObject
+  include GameLaunchpad::Behaviors
+
+  def initialize
+    initialize_behavior_system
+    add_behavior :test_raise_error_behavior
+  end
+  
+  def existing_method; end
+end
+
+class TestSubclassesGameObject
+  include GameLaunchpad::Behaviors
+
+  def initialize
+    initialize_behavior_system
+    add_behavior :test_subclass_behavior
   end
 end
 
@@ -40,6 +77,19 @@ describe GameLaunchpad::BaseBehavior, "#declare_methods" do
     TestGameObject.instance_methods.member?('dont_add').should be_false
     object.methods.member?('dont_add').should be_false
   end
+
+  it "raises an error if a declared method already exists on the target object" do
+    lambda { object = TestRaiseErrorGameObject.new }.should raise_error
+  end
+
+  it "inherits any defined methods declared in subclasses" do
+    object = TestSubclassesGameObject.new
+
+    object.methods.member?('foo').should be_true
+    object.methods.member?('bar').should be_true
+    object.methods.member?('baz').should be_true
+    object.methods.member?('quux').should be_true
+  end
 end
 
 describe GameLaunchpad::BaseBehavior, "#remove" do
@@ -54,5 +104,21 @@ describe GameLaunchpad::BaseBehavior, "#remove" do
     object.methods.member?('foo').should be_false
     object.methods.member?('bar').should be_false
     object.methods.member?('baz').should be_false
+  end
+
+    it "removes methods declared in a superclass" do
+    object = TestSubclassesGameObject.new
+
+    object.methods.member?('foo').should be_true
+    object.methods.member?('bar').should be_true
+    object.methods.member?('baz').should be_true
+    object.methods.member?('quux').should be_true
+
+    object.remove_behavior(:test_subclass_behavior)
+
+    object.methods.member?('foo').should be_false
+    object.methods.member?('bar').should be_false
+    object.methods.member?('baz').should be_false
+    object.methods.member?('quux').should be_false
   end
 end

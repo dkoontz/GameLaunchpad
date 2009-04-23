@@ -4,19 +4,19 @@
 module GameLaunchpad
   module Callbacks
     def self.included(base)
-      base.extend ClassMethods
-      base.send(:include, InstanceMethods)
+      base.extend CallbackClassMethods
+      base.send(:include, CallbackInstanceMethods)
     end
   end
 
-  module InstanceMethods
+  module CallbackInstanceMethods
     def initialize_callback_system
       @__callbacks = Hash.new { |hash,key| hash[key] = {} }
       @random_callback_id = 0
     end
   end
 
-  module ClassMethods
+  module CallbackClassMethods
     def has_callbacks(*names)
       names.each do |callback_name|
         class_eval <<-"ENDL", __FILE__, __LINE__ + 1
