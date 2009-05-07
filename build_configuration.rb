@@ -1,8 +1,8 @@
 configuration do |c|
   c.project_name = 'GameLaunchpad'
   c.output_dir = 'package'
-  c.main_ruby_file = ''
-  c.main_java_file = ''
+  c.main_ruby_file = 'main'
+  c.main_java_file = 'com.gamelaunchpad.GameLoader'
 
   # Compile all Ruby and Java files recursively
   # Copy all other files taking into account exclusion filter

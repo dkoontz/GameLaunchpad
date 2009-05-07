@@ -1,3 +1,28 @@
 require 'rawr'
 require 'rake'
+require 'rbconfig'
 
+WIDTH = 300
+HEIGHT = 300
+SCENE = 'default'
+
+desc "Runs local copy of game"
+task :run => "rawr:jar" do
+  delimiter = ":"
+  case Config::CONFIG["host_os"]
+  when /darwin/i
+    platform = "osx"
+  when /^win/i
+    platform = "windows"
+    delimiter = ";"
+  when /linux/i
+    platform = "linux"
+  when /solaris/i
+    platform = "solaris"
+  end
+  
+  options = "-Dglp_scene=#{SCENE} -Dwidth=#{WIDTH} -Dheight=#{HEIGHT}"
+  native_lib_options = "-Djava.library.path=lib/java/natives/#{platform}"
+  classpath_entries = Dir['package/jar/**/*.jar'].join(delimiter)
+  `java -cp #{classpath_entries} #{options} #{native_lib_options} com.gamelaunchpad.GameLoader`
+end

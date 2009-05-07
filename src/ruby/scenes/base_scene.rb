@@ -5,6 +5,8 @@ require 'managers/default_input_manager'
 
 module GameLaunchpad
   class BaseScene
+    attr_reader :container
+    
     def initialize(game_manager, container)
       @game_manager = game_manager
       @container = container

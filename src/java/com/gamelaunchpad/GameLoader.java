@@ -44,7 +44,14 @@ public class GameLoader extends BasicGame
 
   public void update( GameContainer container, int delta ) throws SlickException
   {
-    game.update(container, delta);
+    try
+    {
+      game.update(container, delta);
+    }
+    catch(org.jruby.exceptions.RaiseException error)
+    {
+      org.newdawn.slick.util.Log.error("Error while updating", error);
+    }
   }
 
   public void render( GameContainer container, Graphics g ) throws SlickException
@@ -55,7 +62,7 @@ public class GameLoader extends BasicGame
     }
     catch(org.jruby.exceptions.RaiseException error)
     {
-      org.newdawn.slick.util.Log.error("Error evaluating Ruby string", error);
+      org.newdawn.slick.util.Log.error("Error while rendering", error);
     }
   }
 
@@ -64,7 +71,7 @@ public class GameLoader extends BasicGame
     try
     {
       AppGameContainer app = new AppGameContainer( new GameLoader() );
-      app.setDisplayMode( 300, 200, false );
+      app.setDisplayMode( Integer.getInteger("width"), Integer.getInteger("height"), false );
       app.start();
     }
     catch ( SlickException e )
