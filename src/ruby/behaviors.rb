@@ -1,3 +1,6 @@
+# Copyright (c) 2009 GameLaunchpad
+# All rights reserved.
+
 require 'inflector'
 
 module GameLaunchpad

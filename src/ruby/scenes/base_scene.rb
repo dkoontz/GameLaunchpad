@@ -1,11 +1,15 @@
+# Copyright (c) 2009 GameLaunchpad
+# All rights reserved.
+
 require 'managers/default_game_object_manager'
 require 'managers/default_render_manager'
 require 'managers/default_update_manager'
 require 'managers/default_input_manager'
+require 'message_queue'
 
 module GameLaunchpad
   class BaseScene
-    attr_reader :container
+    attr_reader :container, :message_queue
     
     def initialize(game_manager, container)
       @game_manager = game_manager
@@ -27,6 +31,8 @@ module GameLaunchpad
       @managers[:render] = DefaultRenderManager.new(self)
       @managers[:update] = DefaultUpdateManager.new(self)
       @managers[:input] = DefaultInputManager.new(self)
+      @message_queue = MessageQueue.new
+      @message_queue.start_processing
     end
 
     def game_object_manager

@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2009 GameLaunchpad
+ * All rights reserved.
+ */
+
 package com.gamelaunchpad;
 
 import org.newdawn.slick.GameContainer;

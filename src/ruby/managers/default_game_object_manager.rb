@@ -1,3 +1,6 @@
+# Copyright (c) 2009 GameLaunchpad
+# All rights reserved.
+
 module GameLaunchpad
   class DefaultGameObjectManager < Manager
     has_callbacks :before_game_object_added, :after_game_object_added

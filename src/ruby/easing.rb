@@ -1,3 +1,6 @@
+# Copyright (c) 2009 GameLaunchpad
+# All rights reserved.
+
 module GameLaunchpad
   class Easing
     def self.linear(start_value, target_value, start_time, current_time, duration)
@@ -10,15 +13,18 @@ module GameLaunchpad
     end
 
     # Exponential easing
-    # slope * ((end_time - start_time) ** 2) + start_value = end_value
+    # Using y=x^2 curve, normalize duration to 1, find what percentage current point
+    # in time is, then calculate the y for that point.  Scale by total value delta
+    # for interpolation.
+    # y = (percent_of_time ^ 2) * value_delta
+    # current_y = y + start_value
     def self.ease_in(start_value, target_value, start_time, current_time, duration)
       if current_time > (start_time + duration)
         target_value
       else
-        value_delta = end_value - start_value
-        time_delta = start_time + duration
-        slope = value_delta / (time_delta ** 2)
-        (slope * ((current_time - start_time) ** 2)) + start_value
+        value_delta = target_value - start_value
+        time_delta = (current_time - start_time).to_f
+        start_value + (((time_delta / duration) ** 2) * value_delta)
       end
     end
 

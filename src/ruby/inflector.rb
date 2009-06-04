@@ -1,3 +1,6 @@
+# Copyright (c) 2009 GameLaunchpad
+# All rights reserved.
+
 # This code is a modified version of the Inflector class
 # from the Ruby on Rails project (http://www.rubyonrails.com)
 # The original license file is provided below.

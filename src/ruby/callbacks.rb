@@ -1,3 +1,6 @@
+# Copyright (c) 2009 GameLaunchpad
+# All rights reserved.
+#
 # This code is loosley inspired from the the Ruby on Rails project (http://www.rubyonrails.com)
 # Big thanks to Yehuda Katz for his original reworked version of these classes.
 

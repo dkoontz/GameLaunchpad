@@ -1,8 +1,11 @@
+# Copyright (c) 2009 GameLaunchpad
+# All rights reserved.
+
 module GameLaunchpad
   class DefaultUpdateManager < Manager
     def load
       @updatable_game_objects = []
-      @scene.manager(:game_object).after_game_object_added do |object, options|
+      @scene.game_object_manager.after_game_object_added do |object, options|
         @updatable_game_objects << object if object.respond_to? :update
       end
 

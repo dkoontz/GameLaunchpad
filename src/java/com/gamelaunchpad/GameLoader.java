@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2009 GameLaunchpad
+ * All rights reserved.
+ */
+
 package com.gamelaunchpad;
 
 import java.util.ArrayList;
@@ -5,12 +10,11 @@ import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.AppGameContainer;
-
 import org.jruby.Ruby;
 import org.jruby.RubyRuntimeAdapter;
 import org.jruby.javasupport.JavaEmbedUtils;
 import org.jruby.runtime.builtin.IRubyObject;
+import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.AppletGameContainer;
 
 public class GameLoader extends BasicGame
@@ -26,7 +30,7 @@ public class GameLoader extends BasicGame
     runtime = JavaEmbedUtils.initialize(new ArrayList());
     evaler = JavaEmbedUtils.newRuntimeAdapter();
     long stop = System.currentTimeMillis();
-    System.out.println("Spent " + (stop - start) + " milliseconds loading JRuby");
+    org.newdawn.slick.util.Log.info("Spent " + (stop - start) + " milliseconds loading JRuby");
   }
 
   public void init( GameContainer container ) throws SlickException
@@ -39,30 +43,26 @@ public class GameLoader extends BasicGame
     Object[] parameters = {container, initialState};
     game = (GameManagerBase)JavaEmbedUtils.invokeMethod(runtime, gameClass, "new", parameters, GameManagerBase.class);
     long stop = System.currentTimeMillis();
-    System.out.println("Spent " + (stop - start) + " milliseconds loading Launchpad");
+    org.newdawn.slick.util.Log.info("Spent " + (stop - start) + " milliseconds loading GameLaunchpad");
   }
 
   public void update( GameContainer container, int delta ) throws SlickException
   {
-    try
-    {
+    try {
       game.update(container, delta);
     }
-    catch(org.jruby.exceptions.RaiseException error)
-    {
-      org.newdawn.slick.util.Log.error("Error while updating", error);
+    catch(org.jruby.exceptions.RaiseException error) {
+      org.newdawn.slick.util.Log.error("Error in update: " + error);
     }
   }
 
   public void render( GameContainer container, Graphics g ) throws SlickException
   {
-    try
-    {
+    try {
       game.render(container, g);
     }
-    catch(org.jruby.exceptions.RaiseException error)
-    {
-      org.newdawn.slick.util.Log.error("Error while rendering", error);
+    catch(org.jruby.exceptions.RaiseException error) {
+      org.newdawn.slick.util.Log.error("Error in render: " + error);
     }
   }
 

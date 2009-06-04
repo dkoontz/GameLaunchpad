@@ -1,8 +1,12 @@
+# Copyright (c) 2009 GameLaunchpad
+# All rights reserved.
+
 require 'game_object'
 require 'manager'
 require 'inflector'
 require 'behaviors/base_behavior'
 require 'scenes/base_scene'
+require 'logger'
 
 module GameLaunchpad
   class GameManager < Java::com::gamelaunchpad::GameManagerBase
@@ -13,9 +17,20 @@ module GameLaunchpad
       java.lang.System.current_time_millis
     end
 
+    def self.logger
+      if !class_variable_defined?(:@@logger)
+        @@logger = Logger.new('gamelaunchpad.log', 10, 1024000 * 10)
+        @@logger.level = Logger::WARN
+      end
+
+      @@logger
+    end
+
     def initialize(container, scene)
       super()
+      puts "in game manager initialize"
       @container = container
+      # Scene system should be re-done to use Slick's state class
       @scene = load_scene(scene)
     end
 
@@ -31,12 +46,13 @@ module GameLaunchpad
     end
 
     def update(container, delta)
-      @scene.manager(:input).update(delta)
-      @scene.manager(:update).update(delta)
+      @container.input.poll(@container.width, @container.height)
+      @scene.input_manager.update(delta)
+      @scene.update_manager.update(delta)
     end
 
     def render(container, graphics)
-      @scene.manager(:render).render(graphics)
+      @scene.render_manager.render(graphics)
     end
   end
 end

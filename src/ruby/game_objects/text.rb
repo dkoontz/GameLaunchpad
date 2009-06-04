@@ -1,3 +1,6 @@
+# Copyright (c) 2009 GameLaunchpad
+# All rights reserved.
+
 include_class "org.newdawn.slick.TrueTypeFont"
 include_class "java.awt.Font"
 
